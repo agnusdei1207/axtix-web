@@ -19,14 +19,9 @@ async fn get_obj() -> impl Responder {
     HttpResponse::Ok().json(obj)
 }
 
+mod app;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::get().to(index))
-            .route("/obj", web::get().to(get_obj))
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
+    app::run().await
 }
