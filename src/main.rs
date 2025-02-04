@@ -38,6 +38,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .configure(routes::home_routes::config)
             .configure(routes::auth_routes::config)
+            .configure(routes::user_routes::config)
     })
     .bind((address, port))?
     // 서버 실행 (비동기 처리)
