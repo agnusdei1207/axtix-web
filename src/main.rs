@@ -1,4 +1,9 @@
-use actix_web::{get, middleware::Logger, web, App, HttpServer, Responder};
+use actix_web::{
+    get,
+    middleware::Logger,
+    web::{self, route},
+    App, HttpServer, Responder,
+};
 use dotenv::dotenv;
 use env_logger;
 
@@ -26,6 +31,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             // 로깅 미들웨어 추가 (요청 정보를 로그로 남김)
             .wrap(Logger::default())
+            .configure(routes::home_routes::config)
     })
     .bind((address, port))?
     // 서버 실행 (비동기 처리)
