@@ -2,6 +2,9 @@ use actix_web::{get, middleware::Logger, web, App, HttpServer, Responder};
 use dotenv::dotenv;
 use env_logger;
 
+mod routes;
+mod utils;
+
 // GET 요청을 처리하는 핸들러 함수
 // 요청 URL: /hello/{name} -> {name} 값이 동적으로 전달됨
 #[get("/hello/{name}")]
