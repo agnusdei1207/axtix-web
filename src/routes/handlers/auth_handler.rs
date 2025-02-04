@@ -66,5 +66,5 @@ pub async fn login(
         return api_response::ApiResponse::new(404, "User not found".to_string());
     }
 
-    api_response::ApiResponse::new(200, "".to_string())
+    api_response::ApiResponse::new(200, user.unwrap().name)
 }
