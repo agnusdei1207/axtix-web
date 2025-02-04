@@ -1,4 +1,8 @@
-use actix_web::http::StatusCode;
+use actix_web::{
+    body::{self, BoxBody},
+    http::StatusCode,
+    web, HttpResponse, Responder,
+};
 pub struct ApiResponse {
     pub status_code: u16,
     pub body: String,
@@ -12,5 +16,13 @@ impl ApiResponse {
             body,
             response_code: StatusCode::from_u16(status_code).unwrap(),
         }
+    }
+}
+
+impl Responder for ApiResponse {
+    type Body = BoxBody;
+    fn respond_to(self, req: &actix_web::HttpRequest) -> actix_web::HttpResponse<Self::Body> {
+        let body: BoxBody = BoxBody::new(web::BytesMut::from(self.body.as_bytes()));
+        HttpResponse::new(self.response_code).set_body(body)
     }
 }
