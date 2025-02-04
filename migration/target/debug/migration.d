@@ -1,0 +1,1 @@
+/Users/agnusdei/workspace/rest/migration/target/debug/migration: /Users/agnusdei/workspace/rest/migration/src/lib.rs /Users/agnusdei/workspace/rest/migration/src/m20220101_000001_create_table.rs /Users/agnusdei/workspace/rest/migration/src/m20250204_072037_create_user_table.rs /Users/agnusdei/workspace/rest/migration/src/main.rs

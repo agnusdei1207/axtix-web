@@ -1,0 +1,10 @@
+/Users/agnusdei/workspace/rest/migration/target/debug/deps/libsea_query_derive-0d17cf688709a1b2.dylib: /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/lib.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/mod.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/attr.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/error.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/path.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/write_arm.rs
+
+/Users/agnusdei/workspace/rest/migration/target/debug/deps/sea_query_derive-0d17cf688709a1b2.d: /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/lib.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/mod.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/attr.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/error.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/path.rs /Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/write_arm.rs
+
+/Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/lib.rs:
+/Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/mod.rs:
+/Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/attr.rs:
+/Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/error.rs:
+/Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/path.rs:
+/Users/agnusdei/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sea-query-derive-0.4.2/src/iden/write_arm.rs:
