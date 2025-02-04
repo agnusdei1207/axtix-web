@@ -1,6 +1,7 @@
 use actix_web::{middleware::Logger, App, HttpServer};
 use dotenv::dotenv;
 use env_logger;
+use sea_orm::{Database, DatabaseConnection};
 
 mod routes;
 mod utils;
@@ -19,8 +20,9 @@ async fn main() -> std::io::Result<()> {
 
     let address: String = (utils::constants::ADDRESS).clone();
     let port: u16 = (utils::constants::PORT).clone();
+    let database_url: String = (utils::constants::DATABASE_URL).clone();
 
-    let db: DatabaseConnection = Database::connect("").await?;
+    let db: DatabaseConnection = Database::connect(database_url).await.unwrap();
 
     // HTTP 서버 생성 및 실행
     HttpServer::new(|| {

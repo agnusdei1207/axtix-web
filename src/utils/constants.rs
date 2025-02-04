@@ -5,7 +5,7 @@ use std::env;
 lazy_static! {
     pub static ref ADDRESS: String = set_address();
     pub static ref PORT: u16 = set_port();
-    pub static ref DATABSE_URL: String = set_database_url();
+    pub static ref DATABASE_URL: String = set_database_url();
 }
 
 fn set_address() -> String {
