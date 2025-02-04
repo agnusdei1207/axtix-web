@@ -1,3 +1,4 @@
+use crate::utils;
 // `api_response`는 API 응답을 표준화하는 유틸리티이고, `AppState`는 애플리케이션의 상태(예: 데이터베이스 연결)를 관리합니다.
 use crate::utils::{api_response, app_state::AppState};
 
@@ -9,6 +10,7 @@ use sea_orm::EntityTrait;
 use sea_orm::QueryFilter;
 use sea_orm::Set;
 use serde::Deserialize;
+use serde_json::json;
 use sha256::digest;
 
 #[derive(Deserialize)]
@@ -64,5 +66,7 @@ pub async fn login(
         return api_response::ApiResponse::new(404, "User not found".to_string());
     }
 
-    api_response::ApiResponse::new(200, user.unwrap().name)
+    let user_data = user.unwrap();
+    let token = utils::jwt::encode_jwt(user_data.email, user_data.id).unwrap();
+    api_response::ApiResponse::new(200, json!({ "token": token }).to_string())
 }
