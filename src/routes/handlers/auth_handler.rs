@@ -3,8 +3,6 @@
 use crate::utils::{api_response, app_state::AppState};
 
 use sea_orm::ColumnTrait;
-
-// ...existing code...
 use sea_orm::Condition;
 // `actix_web` 크레이트에서 필요한 항목들을 가져옵니다.
 // `post`는 POST 요청을 처리하는 핸들러를 정의할 때 사용하고,
@@ -41,8 +39,8 @@ struct LoginModel {
 
 #[post("/register")]
 pub async fn register(
-    app_state: web::Data<AppState>, // 애플리케이션 상태(데이터베이스 연결 등)를 주입받습니다.
-    register_json: web::Json<RegisterModel>, // 클라이언트로부터 받은 JSON 데이터를 `RegisterModel`로 변환합니다.
+    app_state: web::Data<AppState>,
+    register_json: web::Json<RegisterModel>,
 ) -> impl Responder {
     let data: RegisterModel = register_json.into_inner();
     let user_model: entity::user::Model = entity::user::ActiveModel {
