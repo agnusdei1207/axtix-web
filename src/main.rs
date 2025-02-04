@@ -1,32 +1,28 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
-use serde::{Deserialize, Serialize};
+use actix_web::{get, middleware::Logger, web, App, HttpServer, Responder};
+use dotenv::dotenv;
+use env_logger;
 
-// Define a struct for the response
-#[derive(Serialize)]
-struct MyResponse {
-    message: String,
-}
-
-// Define a handler function
-async fn index() -> impl Responder {
-    HttpResponse::Ok().json(MyResponse {
-        message: "Hello, world!".to_string(),
-    })
-}
-
-// Define another handler function
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
+#[get("/hello/{name}")]
+async fn greet(name: web::Path<String>) -> impl Responder {
+    format!("Hello {name}!")
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::get().to(index))
-            .route("/echo", web::post().to(echo))
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
+    // 환경 변수 로드
+    dotenv().ok();
+
+    // 로그 레벨 설정 (RUST_LOG가 없으면 기본값 설정)
+    if std::env::var_os("RUST_LOG").is_none() {
+        std::env::set_var("RUST_LOG", "actix_web=info");
+    }
+
+    // 로거 초기화
+    env_logger::init();
+
+    // 서버 실행
+    HttpServer::new(|| App::new().wrap(Logger::default()).service(greet))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }
