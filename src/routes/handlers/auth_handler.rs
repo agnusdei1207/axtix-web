@@ -52,7 +52,7 @@ pub async fn login(
         .filter(
             Condition::all()
                 .add(entity::user::Column::Email.eq(&login_json.email))
-                .add(entity::user::Column::Password.eq(&login_json.password)),
+                .add(entity::user::Column::Password.eq(digest(&login_json.password))),
         )
         .one(&app_state.db)
         .await
