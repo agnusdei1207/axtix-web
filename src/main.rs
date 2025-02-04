@@ -37,6 +37,7 @@ async fn main() -> std::io::Result<()> {
             // 로깅 미들웨어 추가 (요청 정보를 로그로 남김)
             .wrap(Logger::default())
             .configure(routes::home_routes::config)
+            .configure(routes::auth_routes::config)
     })
     .bind((address, port))?
     // 서버 실행 (비동기 처리)
