@@ -1,7 +1,8 @@
-use actix_web::{middleware::Logger, App, HttpServer};
+use actix_web::{middleware::Logger, web, App, HttpServer};
 use dotenv::dotenv;
 use env_logger;
 use sea_orm::{Database, DatabaseConnection};
+use utils::app_state::AppState;
 
 mod routes;
 mod utils;
@@ -25,9 +26,10 @@ async fn main() -> std::io::Result<()> {
     let db: DatabaseConnection = Database::connect(database_url).await.unwrap();
 
     // HTTP 서버 생성 및 실행
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         // 새로운 Actix 웹 애플리케이션 인스턴스를 생성
         App::new()
+            .app_data(web::Data::new(AppState { db: db.clone() }))
             // 로깅 미들웨어 추가 (요청 정보를 로그로 남김)
             .wrap(Logger::default())
             .configure(routes::home_routes::config)
