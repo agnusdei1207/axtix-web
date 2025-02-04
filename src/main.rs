@@ -1,9 +1,4 @@
-use actix_web::{
-    get,
-    middleware::Logger,
-    web::{self, route},
-    App, HttpServer, Responder,
-};
+use actix_web::{middleware::Logger, App, HttpServer};
 use dotenv::dotenv;
 use env_logger;
 
