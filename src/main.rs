@@ -20,6 +20,8 @@ async fn main() -> std::io::Result<()> {
     let address: String = (utils::constants::ADDRESS).clone();
     let port: u16 = (utils::constants::PORT).clone();
 
+    let db: DatabaseConnection = Database::connect("").await?;
+
     // HTTP 서버 생성 및 실행
     HttpServer::new(|| {
         // 새로운 Actix 웹 애플리케이션 인스턴스를 생성

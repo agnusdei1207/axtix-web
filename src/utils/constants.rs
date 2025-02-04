@@ -1,17 +1,22 @@
 use lazy_static::lazy_static;
 use std::env;
 
+// 환경 변수 읽어서 전역 변수로 설정
 lazy_static! {
-    // 환경 변수 "ADDRESS"를 읽어와서 정적 변수로 저장
     pub static ref ADDRESS: String = set_address();
-    // 환경 변수 "PORT"를 읽어와서 정적 변수로 저장
     pub static ref PORT: u16 = set_port();
+    pub static ref DATABSE_URL: String = set_database_url();
 }
 
 fn set_address() -> String {
     // .env 파일 로드 (환경 변수 설정)
     dotenv::dotenv().ok(); // dotenv::dotenv()가 실패해도 프로그램이 멈추지 않도록 처리
     env::var("ADDRESS").unwrap() // 환경 변수 "ADDRESS" 값을 가져오되, 없으면 패닉 발생
+}
+
+fn set_database_url() -> String {
+    dotenv::dotenv().ok();
+    env::var("DATABASE_URL").unwrap()
 }
 
 fn set_port() -> u16 {
