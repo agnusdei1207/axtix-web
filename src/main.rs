@@ -8,13 +8,8 @@ use utils::app_state::AppState;
 mod routes;
 mod utils;
 
-#[derive(Debug)]
-struct MainError {
-    message: String,
-}
-
-#[actix_web::main] // Actix의 비동기 런타임 매크로 (메인 함수가 비동기로 실행됨)
-async fn main() -> Result<(), MainError> {
+#[actix_web::main]
+async fn main() -> Result<(), String> {
     // 환경 변수 RUST_LOG가 설정되지 않았다면 기본값을 "actix_web=info"로 설정
     if std::env::var_os("RUST_LOG").is_none() {
         std::env::set_var("RUST_LOG", "actix_web=info");
@@ -25,21 +20,16 @@ async fn main() -> Result<(), MainError> {
     // env_logger 초기화 (로그 시스템 활성화)
     env_logger::init();
 
-    let address: String = (utils::constants::ADDRESS).clone();
-    let port: u16 = (utils::constants::PORT).clone();
-    let database_url: String = (utils::constants::DATABASE_URL).clone();
-    let db_connection: DatabaseConnection =
-        Database::connect(database_url)
-            .await
-            .map_err(|err| MainError {
-                message: err.to_string(),
-            })?;
+    let address: String = (utils::constants::ADDRESS).to_string();
+    let port: u16 = *utils::constants::PORT;
+    let database_url: String = (utils::constants::DATABASE_URL).to_string();
+    let db_connection: DatabaseConnection = Database::connect(&database_url)
+        .await
+        .map_err(|err| err.to_string())?;
 
     Migrator::up(&db_connection, None)
         .await
-        .map_err(|err| MainError {
-            message: err.to_string(),
-        })?;
+        .map_err(|err| err.to_string())?;
 
     // HTTP 서버 생성 및 실행
     HttpServer::new(move || {
@@ -55,12 +45,9 @@ async fn main() -> Result<(), MainError> {
             .configure(routes::user_routes::config)
     })
     .bind((address, port))
-    .map_err(|err| MainError {
-        message: err.to_string(),
-    })?
+    .map_err(|err| err.to_string())?
+    // 서버 실행 (비동기 처리)
     .run()
     .await
-    .map_err(|err| MainError {
-        message: err.to_string(),
-    })
+    .map_err(|err| err.to_string())
 }
