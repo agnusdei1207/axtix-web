@@ -32,17 +32,21 @@ pub async fn register(
     register_json: web::Json<RegisterModel>,
 ) -> impl Responder {
     let data: RegisterModel = register_json.into_inner();
-    let user_model: entity::user::Model = entity::user::ActiveModel {
+
+    // 데이터베이스 삽입을 시도합니다.
+    let result = entity::user::ActiveModel {
         name: Set(data.name),
         email: Set(data.email),
         password: Set(digest(data.password)),
         ..Default::default()
     }
     .insert(&app_state.db)
-    .await
-    .unwrap();
+    .await;
 
-    api_response::ApiResponse::new(200, format!("{}", user_model.id))
+    match result {
+        Ok(user_model) => api_response::ApiResponse::new(200, format!("{}", user_model.id)),
+        Err(e) => api_response::ApiResponse::new(500, format!("Internal server error: {}", e)),
+    }
 }
 
 #[post("/login")]
@@ -50,23 +54,28 @@ pub async fn login(
     app_state: web::Data<AppState>,
     login_json: web::Json<LoginModel>,
 ) -> impl Responder {
-    let user: Option<entity::user::Model> = entity::user::Entity::find()
+    let user = entity::user::Entity::find()
         .filter(
             Condition::all()
                 .add(entity::user::Column::Email.eq(&login_json.email))
                 .add(entity::user::Column::Password.eq(digest(&login_json.password))),
         )
         .one(&app_state.db)
-        .await
-        .unwrap();
+        .await;
 
-    dbg!(&user);
-
-    if user.is_none() {
-        return api_response::ApiResponse::new(404, "User not found".to_string());
+    match user {
+        Ok(Some(user_data)) => {
+            // 로그인 성공 시 JWT 토큰을 반환합니다.
+            let token = utils::jwt::encode_jwt(user_data.email, user_data.id).unwrap();
+            api_response::ApiResponse::new(200, json!({ "token": token }).to_string())
+        }
+        Ok(None) => {
+            // 사용자 정보가 없으면 404 응답을 반환합니다.
+            api_response::ApiResponse::new(404, "User not found".to_string())
+        }
+        Err(e) => {
+            // 데이터베이스 쿼리 실패 시 500 응답을 반환합니다.
+            api_response::ApiResponse::new(500, format!("Internal server error: {}", e))
+        }
     }
-
-    let user_data = user.unwrap();
-    let token = utils::jwt::encode_jwt(user_data.email, user_data.id).unwrap();
-    api_response::ApiResponse::new(200, json!({ "token": token }).to_string())
 }
