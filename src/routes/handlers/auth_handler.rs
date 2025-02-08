@@ -1,5 +1,4 @@
 use crate::utils;
-use crate::utils::api_response::ApiResponse;
 // `api_response`는 API 응답을 표준화하는 유틸리티이고, `AppState`는 애플리케이션의 상태(예: 데이터베이스 연결)를 관리합니다.
 use crate::utils::{api_response, app_state::AppState};
 
@@ -55,7 +54,7 @@ pub async fn login(
     app_state: web::Data<AppState>,
     login_json: web::Json<LoginModel>,
 ) -> impl Responder {
-    let user = entity::user::Entity::find()
+    let user: Result<Option<entity::user::Model>, sea_orm::DbErr> = entity::user::Entity::find()
         .filter(
             Condition::all()
                 .add(entity::user::Column::Email.eq(&login_json.email))
