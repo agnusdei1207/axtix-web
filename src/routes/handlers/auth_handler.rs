@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::utils::api_response::ApiResponse;
 // `api_response`는 API 응답을 표준화하는 유틸리티이고, `AppState`는 애플리케이션의 상태(예: 데이터베이스 연결)를 관리합니다.
 use crate::utils::{api_response, app_state::AppState};
 
@@ -75,7 +76,8 @@ pub async fn login(
         }
         Err(e) => {
             // 데이터베이스 쿼리 실패 시 500 응답을 반환합니다.
-            api_response::ApiResponse::new(500, format!("Internal server error: {}", e))
+            log::error!("Database query failed: {:?}", e);
+            api_response::ApiResponse::new(500, format!("Internal server error: {:?}", e))
         }
     }
 }
