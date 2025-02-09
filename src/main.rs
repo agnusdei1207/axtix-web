@@ -20,7 +20,7 @@ async fn main() -> Result<(), String> {
     // env_logger 초기화 (로그 시스템 활성화)
     env_logger::init();
 
-    let address: String = (utils::constants::ADDRESS).to_string();
+    let address: &str = utils::constants::ADDRESS.as_str();
     let port: u16 = *utils::constants::PORT;
     let database_url: String = (utils::constants::DATABASE_URL).to_string();
     let db_connection: DatabaseConnection = Database::connect(&database_url)
