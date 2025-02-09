@@ -66,7 +66,16 @@ pub async fn login(
     match user {
         Ok(Some(user_data)) => {
             // 로그인 성공 시 JWT 토큰을 반환합니다.
-            let token = utils::jwt::encode_jwt(user_data.email, user_data.id).unwrap();
+            let token = match utils::jwt::encode_jwt(user_data.email, user_data.id) {
+                Ok(token) => token,
+                Err(e) => {
+                    log::error!("JWT encoding failed: {:?}", e);
+                    return api_response::ApiResponse::new(
+                        500,
+                        format!("Internal server error: {:?}", e),
+                    );
+                }
+            };
             api_response::ApiResponse::new(200, json!({ "token": token }).to_string())
         }
         Ok(None) => {
