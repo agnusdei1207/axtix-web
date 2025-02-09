@@ -14,10 +14,15 @@ pub struct ApiResponse {
 
 impl ApiResponse {
     pub fn new(status_code: u16, body: String) -> Self {
+        let response_code = match StatusCode::from_u16(status_code) {
+            Ok(code) => code,
+            Err(_) => StatusCode::INTERNAL_SERVER_ERROR,
+        };
+
         ApiResponse {
             status_code,
             body,
-            response_code: StatusCode::from_u16(status_code).unwrap(),
+            response_code,
         }
     }
 }
