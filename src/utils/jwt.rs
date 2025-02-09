@@ -42,10 +42,7 @@ pub fn decode_jwt(jwt: String) -> Result<Claims, jsonwebtoken::errors::Error> {
         );
 
     match decoded_data {
-        Ok(_) => {
-            let token_data: jsonwebtoken::TokenData<Claims> = decoded_data.unwrap();
-            Ok(token_data.claims)
-        }
+        Ok(token_data) => Ok(token_data.claims),
         Err(_) => Err(jsonwebtoken::errors::Error::from(
             jsonwebtoken::errors::ErrorKind::InvalidToken,
         )),
