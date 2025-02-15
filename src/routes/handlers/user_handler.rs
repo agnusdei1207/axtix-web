@@ -7,18 +7,15 @@ use serde_json::json;
 pub async fn user(
     app_state: web::Data<app_state::AppState>,
     claim_data: Claims,
-) -> Result<HttpResponse, Error> {
+) -> Result<api_response::ApiResponse, api_response::ApiResponse> {
     let user_model = entity::user::Entity::find_by_id(claim_data.id)
         .one(&app_state.db)
         .await
         .map_err(|err| actix_web::error::ErrorInternalServerError(err.to_string()))?
-        .ok_or_else(|| actix_web::error::ErrorNotFound("User not found"))?;
+        .ok_or(|| actix_web::error::ErrorNotFound("User not found".to_owned()))?;
 
-    let user_json = json!({
-        "id": user_model.id,
-        "name": user_model.name,
-        "email": user_model.email
-    });
-
-    Ok(HttpResponse::Ok().json(user_json))
+    Ok(api_response::ApiResponse::new(
+        200,
+        "Verified User".to_string(),
+    ))
 }
