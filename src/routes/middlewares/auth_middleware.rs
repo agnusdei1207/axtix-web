@@ -3,9 +3,8 @@ use actix_web::{
     dev::{ServiceRequest, ServiceResponse},
     http::header::HeaderValue,
     middleware::Next,
-    Error, HttpResponse,
+    Error, HttpMessage,
 };
-use jsonwebtoken::TokenData;
 use log::error;
 
 use crate::utils::{
@@ -37,9 +36,11 @@ pub async fn check_auth_middleware(
         }
     };
 
-    // 2. JWT 디코딩 및 검증
     let decoded_jwt: Claims = match decode_jwt(token) {
-        Ok(claims) => claims,
+        Ok(claims) => {
+            req.extensions_mut().insert(claims.clone());
+            claims
+        }
         Err(err) => {
             error!("JWT decoding failed: {}", err);
             return Err(Error::from(api_response::ApiResponse::new(

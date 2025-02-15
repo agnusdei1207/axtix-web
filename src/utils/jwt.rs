@@ -3,7 +3,7 @@ use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header};
 
 use super::constants;
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize, Clone)]
 pub struct Claims {
     pub exp: usize,
     pub iat: usize,
