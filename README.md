@@ -1,4 +1,5 @@
-# RUST Based REST_FULL API SERVER Sample
+# Rust
+## actix-web 연습장
 
 - sea orm 사용
 - postgres 연결
